@@ -1,0 +1,37 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1b063c;
+}
+.big-container {
+    width: max-content;
+    background-color: #2d105c;   
+}
+.light-text {
+    color: #bda0ec;
+}
+.game-board {
+    height: max-content;
+    width: max-content;
+    margin: 0;
+    padding: 0;
+}
+.game-row {
+    height: 100px;
+}
+.game-col {
+    width: 100px;
+    cursor: pointer;
+    background-color: #bda0ec;
+    margin: 5px;
+}
+.game-col:active {
+    transform: scale(0.95);
+}
