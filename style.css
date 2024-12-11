@@ -11,9 +11,11 @@ body {
     background-color: #1b063c;
     position: relative;
 }
+.color-basic {
+    background-color: #2d105c;
+}
 .big-container {
     width: max-content;
-    background-color: #2d105c;   
 }
 .light-text {
     color: #bda0ec;
@@ -32,6 +34,7 @@ body {
     cursor: pointer;
     background-color: #bda0ec;
     margin: 5px;
+    border-style: solid;
 }
 .game-col:active {
     transform: scale(0.95);
@@ -83,4 +86,36 @@ body {
 }
 .hidden {
     display: none;
+}
+.player-names, .game-stats {
+    display: flex;
+    gap: 5px;
+    width: 100%;
+}
+.game-right-sec {
+    gap: 1.5rem;
+}
+.name-input input {
+    background-color: #bda0ec;
+    color: #2d105c;
+    border: none;
+}
+.far-top {
+    position: absolute;
+    top: -100%;
+}
+
+.back-to-normal {
+    animation: back-to-normal 0.5s forwards;
+}
+
+@keyframes back-to-normal {
+    0% {
+        position: absolute;
+        top: -100%;
+    }
+    100% {
+        position: absolute;
+        top: 10%;
+    }
 }

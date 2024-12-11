@@ -30,17 +30,7 @@ startBtn.addEventListener('click', () => {
 })
 
 endBtn.addEventListener('click', () => {
-    isStarted = false;
-    gameCells.forEach((cell) => {
-        cell.classList.remove('player-one-clicked');
-        cell.classList.remove('player-two-clicked');
-        cell.removeAttribute('data-status');
-        cell.removeAttribute('data-player');
-    })
-    playerOne.classList.remove('grow-shrink');
-    playerTwo.classList.remove('grow-shrink');
-    endBtn.classList.add('disabled');
-    startBtn.classList.remove('disabled');
+    resetGame();
 })
 
 function chooseFirstPlayer () {
@@ -89,36 +79,72 @@ function checkResult() {
 
     gameCells.forEach((cell) => {
         const cellPlayer = cell.getAttribute('data-player');
-        if (cellPlayer) {
-            currentBoard.push(cellPlayer);
-        } else {
-            currentBoard.push('0');
-        }
+        currentBoard.push(cellPlayer || '0');
     });
+
     setTimeout(() => {
-        const reslutDisplay = document.getElementById('js-result');
+        const resultDisplay = document.getElementById('js-result');
         const overlay = document.getElementById('js-overlay');
+        let isWin = false;
+
         wins.forEach((pattern) => {
             if (
                 currentBoard[pattern[0]] === currentBoard[pattern[1]] &&
                 currentBoard[pattern[1]] === currentBoard[pattern[2]] &&
                 currentBoard[pattern[0]] !== '0'
             ) {
-                reslutDisplay.classList.remove('hidden');
+                isWin = true;
+                resultDisplay.classList.remove('hidden');
                 switch (currentBoard[pattern[0]]) {
                     case '1':
-                    reslutDisplay.textContent = 'Player 1 has won!!'
-                    break;
+                        resultDisplay.textContent = 'Player 1 has won!!';
+                        break;
                     case '2':
-                    reslutDisplay.textContent = 'Player 2 has won!!'
-                    break;
+                        resultDisplay.textContent = 'Player 2 has won!!';
+                        break;
                 }
                 overlay.classList.remove('hidden');
                 overlay.addEventListener('click', () => {
-                    overlay.classList.add('hidden');
-                    reslutDisplay.classList.add('hidden');
-                })
+                    resetGame(resultDisplay, overlay);
+                }, { once: true });
             }
         });
+
+        if (!isWin && currentBoard.every(cell => cell !== '0')) {
+            resultDisplay.textContent = 'It\'s a tie.';
+            resultDisplay.classList.remove('hidden');
+            overlay.classList.remove('hidden');
+            overlay.addEventListener('click', () => {
+                resetGame(resultDisplay, overlay);
+            }, { once: true });
+        }
     }, 250);
 }
+
+function resetGame(resultDisplay, overlay) {
+    overlay.classList.add('hidden');
+    resultDisplay.classList.add('hidden');
+    playerOne.classList.remove('grow-shrink');
+    playerTwo.classList.remove('grow-shrink');
+    startBtn.classList.remove('disabled');
+    endBtn.classList.add('disabled');
+    gameCells.forEach((cell) => {
+        cell.classList.remove('player-one-clicked', 'player-two-clicked');
+        cell.removeAttribute('data-status');
+        cell.removeAttribute('data-player');
+    });
+    isStarted = false;
+}
+
+
+
+
+const twoPlayersBtn = document.getElementById('js-two-players-btn');
+twoPlayersBtn.addEventListener('click', () => {
+    const mainGameSec = document.getElementById('js-main-game');
+    mainGameSec.classList.remove('far-top');
+    mainGameSec.classList.add('back-to-normal');
+    
+    const welcomeSec = document.getElementById('js-welcome-sec');
+    welcomeSec.classList.add('hidden');
+})
