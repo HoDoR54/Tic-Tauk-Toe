@@ -9,6 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+    <div id="js-result" class="result position-absolute container fs-1 text-light text-center hidden">Haha</div>
+    <div id="js-overlay" class="overlay hidden"></div>
     <section class="big-container container d-flex flex-column align-items-center justify-content-center p-3 rounded-5 shadow-lg">
         <h1 class="light-text">Tic-Tac-Toe</h1>
         <div class="light-text d-flex justify-content-between container-fluid p-3 m-1">
@@ -33,15 +35,15 @@
             </div>
         </div>
         <div class="container-fluid d-flex justify-content-around mt-3">
-            <button class="js-cell game-btn rounded-5 fs-5" id="js-start-btn">Start</button>
-            <button class="js-cell game-btn rounded-5 fs-5 disabled" id="js-end-btn">End</button>
+            <button class="game-btn rounded-5 fs-5" id="js-start-btn">Start</button>
+            <button class="game-btn rounded-5 fs-5 disabled" id="js-end-btn">End</button>
         </div>
     </section>
     <footer class="d-flex justify-content-between position-absolute container-fluid bottom-0 end-0 start-0 p-3 m-0">
         <span class="light-text">Designed and developed by Hpone Tauk Nyi</span>
         <span class="light-text">Contact: hponetaukyou@gmail.com</span>
     </footer>
-    
-    <script src="script.js"></script>
+
+    <script type="module" src="script.js"></script>
 </body>
 </html>

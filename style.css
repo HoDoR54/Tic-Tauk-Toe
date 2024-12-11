@@ -9,6 +9,7 @@ body {
     align-items: center;
     justify-content: center;
     background-color: #1b063c;
+    position: relative;
 }
 .big-container {
     width: max-content;
@@ -66,4 +67,20 @@ body {
 }
 .player-two-clicked {
     background-color: rgb(143, 21, 21);
+}
+.overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    opacity: 0.5;
+    background-color: black;
+    z-index: 99;
+}
+.result {
+    z-index: 100;
+}
+.hidden {
+    display: none;
 }
