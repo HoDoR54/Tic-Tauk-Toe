@@ -11,22 +11,30 @@
 <body>
     <section class="big-container container d-flex flex-column align-items-center justify-content-center p-3 rounded-5 shadow-lg">
         <h1 class="light-text">Tic-Tac-Toe</h1>
+        <div class="light-text d-flex justify-content-between container-fluid p-3 m-1">
+            <span class="js-player-1 player fs-5">Player 1</span>
+            <span class="js-player-2 player fs-5">Player 2</span>
+        </div>
         <div class="game-board container">
             <div class="game-row row g-0">
-                <div class="game-col col-4 border border-dark rounded-5"></div>
-                <div class="game-col col-4 border border-dark rounded-5"></div>
-                <div class="game-col col-4 border border-dark rounded-5"></div>
+                <div class="js-cell game-col col-4 border border-dark rounded-5" data-index="0"></div>
+                <div class="js-cell game-col col-4 border border-dark rounded-5" data-index="1"></div>
+                <div class="js-cell game-col col-4 border border-dark rounded-5" data-index="2"></div>
             </div>
             <div class="game-row row g-0">
-                <div class="game-col col-4 border border-dark rounded-5"></div>
-                <div class="game-col col-4 border border-dark rounded-5"></div>
-                <div class="game-col col-4 border border-dark rounded-5"></div>
+                <div class="js-cell game-col col-4 border border-dark rounded-5" data-index="3"></div>
+                <div class="js-cell game-col col-4 border border-dark rounded-5" data-index="4"></div>
+                <div class="js-cell game-col col-4 border border-dark rounded-5" data-index="5"></div>
             </div>
             <div class="game-row row g-0">
-                <div class="game-col col-4 border border-dark rounded-5"></div>
-                <div class="game-col col-4 border border-dark rounded-5"></div>
-                <div class="game-col col-4 border border-dark rounded-5"></div>
+                <div class="js-cell game-col col-4 border border-dark rounded-5" data-index="6"></div>
+                <div class="js-cell game-col col-4 border border-dark rounded-5" data-index="7"></div>
+                <div class="js-cell game-col col-4 border border-dark rounded-5" data-index="8"></div>
             </div>
+        </div>
+        <div class="container-fluid d-flex justify-content-around mt-3">
+            <button class="js-cell game-btn rounded-5 fs-5" id="js-start-btn">Start</button>
+            <button class="js-cell game-btn rounded-5 fs-5 disabled" id="js-end-btn">End</button>
         </div>
     </section>
     <footer class="d-flex justify-content-between position-absolute container-fluid bottom-0 end-0 start-0 p-3 m-0">

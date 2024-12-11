@@ -35,3 +35,35 @@ body {
 .game-col:active {
     transform: scale(0.95);
 }
+.game-btn {
+    background-color: #bda0ec;
+    color:#2d105c;
+    border: none;
+    padding: 10px 15px;
+}
+.game-btn:active {
+    transform: scale(0.95);
+}
+.grow-shrink {
+    animation: grow-shrink 1s infinite;
+}
+
+@keyframes grow-shrink {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.25);
+    }
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+.player-one-clicked {
+    background-color: green;
+}
+.player-two-clicked {
+    background-color: rgb(143, 21, 21);
+}
