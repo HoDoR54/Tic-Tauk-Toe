@@ -87,35 +87,3 @@ body {
 .hidden {
     display: none;
 }
-.player-names, .game-stats {
-    display: flex;
-    gap: 5px;
-    width: 100%;
-}
-.game-right-sec {
-    gap: 1.5rem;
-}
-.name-input input {
-    background-color: #bda0ec;
-    color: #2d105c;
-    border: none;
-}
-.far-top {
-    position: absolute;
-    top: -100%;
-}
-
-.back-to-normal {
-    animation: back-to-normal 0.5s forwards;
-}
-
-@keyframes back-to-normal {
-    0% {
-        position: absolute;
-        top: -100%;
-    }
-    100% {
-        position: absolute;
-        top: 10%;
-    }
-}
