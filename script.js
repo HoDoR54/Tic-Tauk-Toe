@@ -136,15 +136,30 @@ function resetGame(resultDisplay, overlay) {
     isStarted = false;
 }
 
+const twoplayerModeBtn = document.getElementById('js-two-players-menu');
+const twoplayerMode = document.getElementById('js-two-players');
+const menuBox = document.getElementById('js-game-menu');
+const backToMenu = document.getElementById('js-back-to-menu');
 
+let gameMode = localStorage.getItem('current-mode') || 'menu';
 
+function updateMode(mode) {
+    if (mode === 'menu') {
+        menuBox.classList.remove('hidden');
+        twoplayerMode.classList.add('hidden');
+    } else if (mode === 'two-players') {
+        twoplayerMode.classList.remove('hidden');
+        menuBox.classList.add('hidden');
+    }
+    localStorage.setItem('current-mode', mode);
+}
 
-const twoPlayersBtn = document.getElementById('js-two-players-btn');
-twoPlayersBtn.addEventListener('click', () => {
-    const mainGameSec = document.getElementById('js-main-game');
-    mainGameSec.classList.remove('far-top');
-    mainGameSec.classList.add('back-to-normal');
-    
-    const welcomeSec = document.getElementById('js-welcome-sec');
-    welcomeSec.classList.add('hidden');
-})
+updateMode(gameMode);
+
+twoplayerModeBtn.addEventListener('click', () => {
+    updateMode('two-players');
+});
+
+backToMenu.addEventListener('click', () => {
+    updateMode('menu');
+});

@@ -14,8 +14,10 @@ body {
 .color-basic {
     background-color: #2d105c;
 }
-.big-container {
+.game-box {
     width: max-content;
+    display: flex;
+    flex-direction: column;
 }
 .light-text {
     color: #bda0ec;
@@ -86,4 +88,13 @@ body {
 }
 .hidden {
     display: none;
+}
+.game-btn:hover {
+    opacity: 0.9;
+}
+.back-to-menu-link {
+    color: #bda0ec;
+}
+.back-to-menu-link:hover {
+    opacity: 0.9;
 }
