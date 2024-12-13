@@ -11,7 +11,7 @@ const gameCells = document.querySelectorAll('.js-cell');
 
 let playerTurn;
 let isStarted = false;
-startBtn.addEventListener('click', () => {
+startBtn.addEventListener('click', () => { 
     isStarted = true;
     playerTurn = chooseFirstPlayer();
     startBtn.classList.add('disabled');
@@ -138,6 +138,7 @@ function resetGame(resultDisplay, overlay) {
 
 const twoplayerModeBtn = document.getElementById('js-two-players-menu');
 const twoplayerMode = document.getElementById('js-two-players');
+const vsAiModeBtn = document.getElementById('js-vs-ai-menu');
 const menuBox = document.getElementById('js-game-menu');
 const backToMenu = document.getElementById('js-back-to-menu');
 
