@@ -151,6 +151,11 @@ function updateMode(mode) {
     } else if (mode === 'two-players') {
         twoplayerMode.classList.remove('hidden');
         menuBox.classList.add('hidden');
+    } else if (mode === 'vs-ai') {
+        twoplayerMode.classList.remove('hidden');
+        menuBox.classList.add('hidden');
+        playerOne.textContent = 'You';
+        playerTwo.textContent = 'Computer';
     }
     localStorage.setItem('current-mode', mode);
 }
@@ -163,4 +168,8 @@ twoplayerModeBtn.addEventListener('click', () => {
 
 backToMenu.addEventListener('click', () => {
     updateMode('menu');
+});
+
+vsAiModeBtn.addEventListener('click', () => {
+    updateMode('vs-ai');
 });
