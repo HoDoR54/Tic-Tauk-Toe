@@ -1,4 +1,5 @@
 import {wins} from "./wins.js";
+import { makeAiMove } from "./ai-opponent.js";
 
 let gameMode = localStorage.getItem('current-mode') || 'menu';
 
@@ -13,11 +14,15 @@ const gameCells = document.querySelectorAll('.js-cell');
 
 let playerTurn;
 let isStarted = false;
-startBtn.addEventListener('click', () => { 
+
+startBtn.addEventListener('click', () => {
     isStarted = true;
-    if (gameMode != 'vs-ai') {
+    if (localStorage.getItem('current-mode') === 'vs-ai') {
+        playerTurn = '1';
+        playerOne.classList.add('grow-shrink');
+        playerTwo.classList.remove('grow-shrink');
+    } else if (localStorage.getItem('current-mode') === 'two-players') {
         playerTurn = chooseFirstPlayer();
-        
         switch (playerTurn) {
             case '1':
                 playerOne.classList.add('grow-shrink');
@@ -28,10 +33,6 @@ startBtn.addEventListener('click', () => {
                 playerOne.classList.remove('grow-shrink');
                 break;
         }
-    } else {
-        playerTurn = '1';
-        playerOne.classList.add('grow-shrink');
-        playerTwo.classList.remove('grow-shrink');
     }
     startBtn.classList.add('disabled');
     endBtn.classList.remove('disabled');
@@ -46,6 +47,8 @@ function chooseFirstPlayer () {
     let firstPlayer;
     if (randomNum === 0) {
         firstPlayer = '1';
+        playerOne.classList.add('grow-shrink');
+        playerTwo.classList.remove('grow-shrink');
     } else {
         firstPlayer = '2';
         playerOne.classList.remove('grow-shrink');
@@ -53,30 +56,31 @@ function chooseFirstPlayer () {
     }
     return firstPlayer;
 }
+
+
 gameCells.forEach((cell) => {
     cell.addEventListener('click', () => {
         if (!isStarted) return;
         if (cell.getAttribute('data-status') === 'taken') return;
 
-        if (gameMode === 'vs-ai') {
+        if (localStorage.getItem('current-mode') === 'vs-ai') {
             cell.classList.add('player-one-clicked');
             cell.setAttribute('data-player', '1');
             cell.setAttribute('data-status', 'taken');
             playerOne.classList.remove('grow-shrink');
             playerTwo.classList.add('grow-shrink');
             checkResult();
+            playerTurn = '2';
 
-            if (isStarted) {
-                // Delay AI's move for realism
+            if (playerTurn === '2') {
                 setTimeout(() => {
-                    vsAi(); // AI makes a move
+                    makeAiMove();
                     playerTwo.classList.remove('grow-shrink');
-                    playerOne.classList.add('grow-shrink'); // Switch highlight to Player 1
+                    playerOne.classList.add('grow-shrink');
                     checkResult();
                 }, Math.random() * 3000 + 1000);
             }
-        } else if (gameMode !== 'vs-ai') {
-            // Two-players mode
+        } else if (localStorage.getItem('current-mode') !== 'vs-ai') {
             switch (playerTurn) {
                 case '1':
                     cell.classList.add('player-one-clicked');
@@ -189,7 +193,6 @@ function updateMode(mode) {
         modeDisplay.textContent = 'Versus A.I.'
     }
     localStorage.setItem('current-mode', mode);
-    console.log(localStorage.getItem('current-mode'));
     resetGame(resultDisplay, overlay);
 }
 
@@ -207,32 +210,3 @@ backToMenu.addEventListener('click', () => {
 vsAiModeBtn.addEventListener('click', () => {
     updateMode('vs-ai');
 });
-
-function vsAi () {
-    let playerMoves = [];
-    let aiMoves = [];
-
-    gameCells.forEach((cell, index) => {
-        const cellPlayer = cell.getAttribute('data-player');
-        if (cellPlayer === '1') {
-            playerMoves.push(index);
-            cell.setAttribute('data-status', 'taken');
-        } else if (cellPlayer === '2') {
-            aiMoves.push(index);
-            cell.setAttribute('data-status', 'taken');
-        }
-    })
-    console.log(playerMoves);
-    
-
-}
-
-/* 
-    computer အလှည့်ရောက်မရောက်စစ်မယ် (done)
-    (+ a random delay) (done)
-    board ပေါ်မှာရှိတဲ့ player ရဲ့ move တွေကို ဖတ်မယ် (done)
-    အဲဒီ move တွေကို wins.js ထဲက array တွေနဲ့ တိုက်စစ်မယ်
-    တကယ်လို့ နိုင်ဖို့နီးစပ်နေရင် နိုင်မယ့်အကွက်ကို ပိတ်မယ်
-    တကယ်လို့ နိုင်ဖို့မနီးစပ်ဘူးဆိုရင် ကိုယ်တိုင်နိုင်ဖို့လုပ်မယ်
-    အလှည့်ပြန်ပြောင်းမယ်
-*/
