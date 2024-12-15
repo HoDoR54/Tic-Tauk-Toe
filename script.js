@@ -30,7 +30,7 @@ startBtn.addEventListener('click', () => {
 })
 
 endBtn.addEventListener('click', () => {
-    resetGame();
+    resetGame(resultDisplay, overlay);
 })
 
 function chooseFirstPlayer () {
@@ -74,6 +74,9 @@ gameCells.forEach((cell, index) => {
     });
 });
 
+const overlay = document.getElementById('js-overlay');
+const resultDisplay = document.getElementById('js-result');
+
 function checkResult() {
     let currentBoard = [];
 
@@ -83,8 +86,6 @@ function checkResult() {
     });
 
     setTimeout(() => {
-        const resultDisplay = document.getElementById('js-result');
-        const overlay = document.getElementById('js-overlay');
         let isWin = false;
 
         wins.forEach((pattern) => {
@@ -151,6 +152,8 @@ function updateMode(mode) {
     } else if (mode === 'two-players') {
         twoplayerMode.classList.remove('hidden');
         menuBox.classList.add('hidden');
+        playerOne.textContent = 'Player 1';
+        playerTwo.textContent = 'Player 2';
     } else if (mode === 'vs-ai') {
         twoplayerMode.classList.remove('hidden');
         menuBox.classList.add('hidden');
