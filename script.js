@@ -2,6 +2,7 @@ import {wins} from "./wins.js";
 
 let gameMode = localStorage.getItem('current-mode') || 'menu';
 
+
 const playerOne = document.getElementsByClassName('js-player-1')[0];
 const playerTwo = document.getElementsByClassName('js-player-2')[0];
 
@@ -58,25 +59,23 @@ gameCells.forEach((cell) => {
         if (cell.getAttribute('data-status') === 'taken') return;
 
         if (gameMode === 'vs-ai') {
-            if (playerTurn === '1') {
-                cell.classList.add('player-one-clicked');
-                cell.setAttribute('data-player', '1');
-                cell.setAttribute('data-status', 'taken');
-                playerOne.classList.remove('grow-shrink');
-                playerTwo.classList.add('grow-shrink');
-                checkResult();
+            cell.classList.add('player-one-clicked');
+            cell.setAttribute('data-player', '1');
+            cell.setAttribute('data-status', 'taken');
+            playerOne.classList.remove('grow-shrink');
+            playerTwo.classList.add('grow-shrink');
+            checkResult();
 
-                if (isStarted) {
-                    // Delay AI's move for realism
-                    setTimeout(() => {
-                        vsAi(); // AI makes a move
-                        playerTwo.classList.remove('grow-shrink');
-                        playerOne.classList.add('grow-shrink'); // Switch highlight to Player 1
-                        checkResult();
-                    }, Math.random() * 3000);
-                }
+            if (isStarted) {
+                // Delay AI's move for realism
+                setTimeout(() => {
+                    vsAi(); // AI makes a move
+                    playerTwo.classList.remove('grow-shrink');
+                    playerOne.classList.add('grow-shrink'); // Switch highlight to Player 1
+                    checkResult();
+                }, Math.random() * 3000 + 1000);
             }
-        } else {
+        } else if (gameMode !== 'vs-ai') {
             // Two-players mode
             switch (playerTurn) {
                 case '1':
@@ -196,6 +195,7 @@ function updateMode(mode) {
 
 updateMode(gameMode);
 
+
 twoplayerModeBtn.addEventListener('click', () => {
     updateMode('two-players');
 });
@@ -220,23 +220,17 @@ function vsAi () {
         } else if (cellPlayer === '2') {
             aiMoves.push(index);
             cell.setAttribute('data-status', 'taken');
-        } else {
-            return;
         }
     })
+    console.log(playerMoves);
+    
 
-    wins.forEach((pattern) => {
-        pattern.forEach((move) => {
-
-        })
-    })
 }
-
 
 /* 
     computer အလှည့်ရောက်မရောက်စစ်မယ် (done)
     (+ a random delay) (done)
-    board ပေါ်မှာရှိတဲ့ player 1 ရဲ့ move တွေကို ဖတ်မယ် (done)
+    board ပေါ်မှာရှိတဲ့ player ရဲ့ move တွေကို ဖတ်မယ် (done)
     အဲဒီ move တွေကို wins.js ထဲက array တွေနဲ့ တိုက်စစ်မယ်
     တကယ်လို့ နိုင်ဖို့နီးစပ်နေရင် နိုင်မယ့်အကွက်ကို ပိတ်မယ်
     တကယ်လို့ နိုင်ဖို့မနီးစပ်ဘူးဆိုရင် ကိုယ်တိုင်နိုင်ဖို့လုပ်မယ်
