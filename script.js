@@ -1,5 +1,4 @@
 import {wins} from "./wins.js";
-import { makeAiMove } from "./ai-opponent.js";
 
 let gameMode = localStorage.getItem('current-mode') || 'menu';
 
@@ -14,6 +13,7 @@ const gameCells = document.querySelectorAll('.js-cell');
 
 let playerTurn;
 let isStarted = false;
+let isDone = false;
 
 startBtn.addEventListener('click', () => {
     isStarted = true;
@@ -74,10 +74,11 @@ gameCells.forEach((cell) => {
 
             if (playerTurn === '2') {
                 setTimeout(() => {
-                    makeAiMove();
-                    playerTwo.classList.remove('grow-shrink');
-                    playerOne.classList.add('grow-shrink');
-                    checkResult();
+                        makeAiMove();
+                        playerTwo.classList.remove('grow-shrink');
+                        playerOne.classList.add('grow-shrink');
+                        checkResult();
+                        playerTurn = '1';
                 }, Math.random() * 3000 + 1000);
             }
         } else if (localStorage.getItem('current-mode') !== 'vs-ai') {
@@ -154,6 +155,8 @@ function checkResult() {
 }
 
 function resetGame(resultDisplay, overlay) {
+    isStarted = false;
+    isDone = true;
     overlay.classList.add('hidden');
     resultDisplay.classList.add('hidden');
     playerOne.classList.remove('grow-shrink');
@@ -165,7 +168,6 @@ function resetGame(resultDisplay, overlay) {
         cell.removeAttribute('data-status');
         cell.removeAttribute('data-player');
     });
-    isStarted = false;
 }
 
 const twoplayerModeBtn = document.getElementById('js-two-players-menu');
@@ -210,3 +212,107 @@ backToMenu.addEventListener('click', () => {
 vsAiModeBtn.addEventListener('click', () => {
     updateMode('vs-ai');
 });
+
+
+function makeAiMove() {
+    const aiMoves = Array.from(gameCells).filter(cell => cell.getAttribute('data-player') === '2');
+    if (aiMoves.length === 0) {
+        const availableCells = Array.from(gameCells).filter(cell => !cell.hasAttribute('data-status'));
+        const randomCell = availableCells[Math.floor(Math.random() * availableCells.length)];
+        randomCell.setAttribute('data-status', 'taken');
+        randomCell.setAttribute('data-player', '2');
+        randomCell.classList.add('player-two-clicked');
+        return;
+    }
+
+
+    let bestScore = -Infinity;
+    let bestMove;
+
+    gameCells.forEach((cell, index) => {
+        if (!cell.hasAttribute('data-status')) {
+            cell.setAttribute('data-status', 'taken');
+            cell.setAttribute('data-player', '2');
+
+            let score = minimax(false);
+
+            cell.removeAttribute('data-status');
+            cell.removeAttribute('data-player');
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = index;
+            }
+        }
+    });
+
+    if (bestMove !== undefined) {
+        const cell = gameCells[bestMove];
+        cell.setAttribute('data-status', 'taken');
+        cell.setAttribute('data-player', '2');
+        cell.classList.add('player-two-clicked');
+    }
+}
+
+function minimax(isMaximizing) {
+    const winner = checkWinner();
+
+    if (winner === '1') return -1;
+    if (winner === '2') return 1;
+    if (winner === null) return 0; 
+
+    if (isMaximizing) {
+        let bestScore = -Infinity;
+
+        gameCells.forEach((cell) => {
+            if (!cell.hasAttribute('data-status')) {
+                cell.setAttribute('data-status', 'taken');
+                cell.setAttribute('data-player', '2');
+
+                let score = minimax(false);
+
+                cell.removeAttribute('data-status');
+                cell.removeAttribute('data-player');
+
+                bestScore = Math.max(score, bestScore);
+            }
+        });
+
+        return bestScore;
+    } else {
+        let bestScore = Infinity;
+
+        gameCells.forEach((cell) => {
+            if (!cell.hasAttribute('data-status')) {
+                cell.setAttribute('data-status', 'taken');
+                cell.setAttribute('data-player', '1');
+
+                let score = minimax(true);
+
+                cell.removeAttribute('data-status');
+                cell.removeAttribute('data-player');
+
+                bestScore = Math.min(score, bestScore);
+            }
+        });
+
+        return bestScore;
+    }
+}
+
+function checkWinner() {
+    const currentBoard = Array.from(gameCells).map(cell => cell.getAttribute('data-player') || '0');
+
+    for (let pattern of wins) {
+        const [a, b, c] = pattern;
+        if (currentBoard[a] === currentBoard[b] && currentBoard[b] === currentBoard[c] && currentBoard[a] !== '0') {
+            return currentBoard[a];
+        }
+    }
+
+    if (currentBoard.every(cell => cell !== '0')) {
+        return null;
+    }
+
+    return undefined;
+}
