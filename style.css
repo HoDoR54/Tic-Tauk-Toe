@@ -87,7 +87,7 @@ body {
     z-index: 100;
 }
 .hidden {
-    display: none;
+    display: none !important;
 }
 .game-btn:hover {
     opacity: 0.9;
