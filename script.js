@@ -16,6 +16,8 @@ let isStarted = false;
 let isDone = false;
 
 startBtn.addEventListener('click', () => {
+    isDone = false;
+    
     isStarted = true;
     if (localStorage.getItem('current-mode') === 'vs-ai') {
         playerTurn = '1';
@@ -74,12 +76,13 @@ gameCells.forEach((cell) => {
 
             if (playerTurn === '2') {
                 setTimeout(() => {
-                        makeAiMove();
-                        playerTwo.classList.remove('grow-shrink');
-                        playerOne.classList.add('grow-shrink');
-                        checkResult();
-                        playerTurn = '1';
-                }, Math.random() * 3000 + 1000);
+                    if(isDone) return;
+                    makeAiMove();
+                    playerTwo.classList.remove('grow-shrink');
+                    playerOne.classList.add('grow-shrink');
+                    checkResult();
+                    playerTurn = '1';
+                }, Math.random() * 2000 + 500);
             }
         } else if (localStorage.getItem('current-mode') !== 'vs-ai') {
             switch (playerTurn) {
@@ -110,6 +113,7 @@ const overlay = document.getElementById('js-overlay');
 const resultDisplay = document.getElementById('js-result');
 
 function checkResult() {
+    const currentMode = localStorage.getItem('current-mode');
     let currentBoard = [];
 
     gameCells.forEach((cell) => {
@@ -126,30 +130,48 @@ function checkResult() {
                 currentBoard[pattern[1]] === currentBoard[pattern[2]] &&
                 currentBoard[pattern[0]] !== '0'
             ) {
+                isDone = true;
                 isWin = true;
                 resultDisplay.classList.remove('hidden');
                 switch (currentBoard[pattern[0]]) {
                     case '1':
-                        resultDisplay.textContent = 'Player 1 has won!!';
+                        switch(currentMode) {
+                            case 'two-players':
+                                resultDisplay.textContent = 'Player 1 has won!!';
+                            break;
+                            case 'vs-ai':
+                                resultDisplay.textContent = 'You have won!!';
+                            break;
+                        } 
                         break;
                     case '2':
-                        resultDisplay.textContent = 'Player 2 has won!!';
+                        switch(currentMode) {
+                            case 'two-players':
+                                resultDisplay.textContent = 'Player 2 has won!!';
+                            break;
+                            case 'vs-ai':
+                                resultDisplay.textContent = 'Computer has won!!';
+                            break;
+                        }
+                        
                         break;
                 }
                 overlay.classList.remove('hidden');
                 overlay.addEventListener('click', () => {
                     resetGame(resultDisplay, overlay);
-                }, { once: true });
+                });
             }
         });
 
         if (!isWin && currentBoard.every(cell => cell !== '0')) {
+            isDone = true;
+            
             resultDisplay.textContent = 'It\'s a tie.';
             resultDisplay.classList.remove('hidden');
             overlay.classList.remove('hidden');
             overlay.addEventListener('click', () => {
                 resetGame(resultDisplay, overlay);
-            }, { once: true });
+            });
         }
     }, 250);
 }
@@ -157,6 +179,7 @@ function checkResult() {
 function resetGame(resultDisplay, overlay) {
     isStarted = false;
     isDone = true;
+    
     overlay.classList.add('hidden');
     resultDisplay.classList.add('hidden');
     playerOne.classList.remove('grow-shrink');
@@ -215,6 +238,7 @@ vsAiModeBtn.addEventListener('click', () => {
 
 
 function makeAiMove() {
+    if (isDone) return;
     const aiMoves = Array.from(gameCells).filter(cell => cell.getAttribute('data-player') === '2');
     if (aiMoves.length === 0) {
         const availableCells = Array.from(gameCells).filter(cell => !cell.hasAttribute('data-status'));
