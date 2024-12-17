@@ -239,17 +239,6 @@ vsAiModeBtn.addEventListener('click', () => {
 
 function makeAiMove() {
     if (isDone) return;
-    const aiMoves = Array.from(gameCells).filter(cell => cell.getAttribute('data-player') === '2');
-    if (aiMoves.length === 0) {
-        const availableCells = Array.from(gameCells).filter(cell => !cell.hasAttribute('data-status'));
-        const randomCell = availableCells[Math.floor(Math.random() * availableCells.length)];
-        randomCell.setAttribute('data-status', 'taken');
-        randomCell.setAttribute('data-player', '2');
-        randomCell.classList.add('player-two-clicked');
-        return;
-    }
-
-
     let bestScore = -Infinity;
     let bestMove;
 
