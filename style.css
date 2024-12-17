@@ -98,6 +98,3 @@ body {
 .back-to-menu-link:hover {
     opacity: 0.9;
 }
-.unclickable {
-    pointer-events: none;
-}
