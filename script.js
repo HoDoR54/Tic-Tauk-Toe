@@ -60,11 +60,11 @@ function chooseFirstPlayer() {
 
 gameCells.forEach((cell) => {
   cell.addEventListener("click", () => {
-    if (playerTurn !== "1") return;
     if (!isStarted) return;
     if (cell.getAttribute("data-status") === "taken") return;
 
     if (localStorage.getItem("current-mode") === "vs-ai") {
+      if (playerTurn !== "1") return;
       cell.classList.add("player-one-clicked");
       cell.setAttribute("data-player", "1");
       cell.setAttribute("data-status", "taken");
